@@ -168,8 +168,23 @@ lsi() {
 }
 
 eval "$(fzf --bash)"
-# oh my posh
-eval "$(oh-my-posh init bash --config '/root/.cache/oh-my-posh/themes/powerlevel10k_rainbow.omp.json')"
+
+### Smart completions
+# keeps 100,000 commands in memory
+HISTSIZE=100000
+# keeps 200,000 commands in history file.
+HISTFILESIZE=200000
+# skips duplicate sequential commands and cleans old duplicates
+HISTCONTROL=ignoredups:erasedups
+# appends to the history file instead of overwriting it when closing
+shopt -s histappend
+# writes and reloads history after every single command so all open windows stay synced
+PROMPT_COMMAND="history -a; history -n"
+## Arrow controls are configured in ~/.inputrc
+
+export PATH=$PATH:~/.local/bin
+
+eval "$(oh-my-posh init bash --config powerlevel10k_rainbow)"
 ```
 
 ## custom dns
