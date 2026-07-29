@@ -159,6 +159,8 @@ micro ~/.bashrc
 Add the following aliases and functions to your `.bashrc` file:
 
 ```bash
+export PATH=$PATH:~/.local/bin
+
 # install ls-interactive
 lsi() { 
    local output 
@@ -182,7 +184,7 @@ shopt -s histappend
 PROMPT_COMMAND="history -a; history -n"
 ## Arrow controls are configured in ~/.inputrc
 
-export PATH=$PATH:~/.local/bin
+EDITOR=micro
 
 eval "$(oh-my-posh init bash --config powerlevel10k_rainbow)"
 ```
