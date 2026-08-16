@@ -1,0 +1,10 @@
+*
+
+# Allow Git to navigate into subdirectories
+# !*/
+
+# 3. Allowlist specific files
+#!*.js
+!.gitignore
+!README.md
+!linux-setup.md
