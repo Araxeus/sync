@@ -8,3 +8,5 @@
 !.gitignore
 !README.md
 !linux-setup.md
+!setup-linux-env.sh
+!linux-env-vendor-config.yml
