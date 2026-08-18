@@ -1,9 +1,11 @@
 #!/bin/bash
 
-apt install wget -y
+sudo apt update
+sudo apt install wget -y
+set -euo pipefail
 
-cd $HOME
 installpath="$HOME/.local/bin"
+mkdir -p "$installpath"
 
 tmpdir=$(mktemp -d)
 # The trap removes the temp dir when this shell exits, even if a command fails.
@@ -19,9 +21,10 @@ sed -i "0,/REPLACE_WITH_VENDOR_FOLDER/s|REPLACE_WITH_VENDOR_FOLDER|$installpath|
 
 "$installpath/vendor" sync -c "$HOME/vendor.yml"
 
-echo '{ "clipboard": "terminal" }' > ~/.config/micro/settings.json
+mkdir -p "$HOME/.config/micro"
+echo '{ "clipboard": "terminal" }' > "$HOME/.config/micro/settings.json"
 
-cat << 'EOF' >> ~/.bashrc
+cat << 'EOF' >> "$HOME/.bashrc"
 export PATH="$HOME/.local/bin:$PATH"
 
 eval "$(fzf --bash)"
