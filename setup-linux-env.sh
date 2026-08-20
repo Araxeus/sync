@@ -24,6 +24,10 @@ sed -i "0,/REPLACE_WITH_VENDOR_FOLDER/s|REPLACE_WITH_VENDOR_FOLDER|$installpath|
 mkdir -p "$HOME/.config/micro"
 echo '{ "clipboard": "terminal" }' > "$HOME/.config/micro/settings.json"
 
+batconfig=$("$installpath/bat" --config-file)
+mkdir -p "$(dirname "$batconfig")"
+echo "--paging=never" > "$batconfig"
+
 cat << 'EOF' >> "$HOME/.bashrc"
 export PATH="$HOME/.local/bin:$PATH"
 
