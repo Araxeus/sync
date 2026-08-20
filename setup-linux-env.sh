@@ -19,7 +19,7 @@ wget https://raw.githubusercontent.com/Araxeus/sync/refs/heads/main/linux-env-ve
 
 sed -i "0,/REPLACE_WITH_VENDOR_FOLDER/s|REPLACE_WITH_VENDOR_FOLDER|$installpath|" "$HOME/vendor.yml"
 
-"$installpath/vendor" sync -c "$HOME/vendor.yml"
+"$installpath/vendor" --config "$HOME/vendor.yml" sync
 
 mkdir -p "$HOME/.config/micro"
 echo '{ "clipboard": "terminal" }' > "$HOME/.config/micro/settings.json"
