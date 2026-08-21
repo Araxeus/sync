@@ -4,39 +4,38 @@ default:
   vendorFolder: '{vendorFolder}'
   locked: false
 vendorDependencies:
+  vendorfiles-rs:
+    repository: https://github.com/Araxeus/vendorfiles-rs
+    files:
+      - '{release}/vendor_v{version}_linux.tar.gz':
+          - vendor
   ls-interactive:
     repository: https://github.com/Araxeus/ls-interactive
-    version: v1.7.0
     files:
       - '{release}/lsi_v{version}_linux.tar.gz':
           - ls-interactive
   micro:
     repository: https://github.com/zyedidia/micro
-    version: v2.0.15
     files:
       - '{release}/micro-{version}-linux64.tar.gz':
           micro-{version}/micro: micro
   fd:
     repository: https://github.com/sharkdp/fd
-    version: v10.4.2
     files:
       - '{release}/fd-v{version}-x86_64-unknown-linux-musl.tar.gz':
           fd-v{version}-x86_64-unknown-linux-musl/fd: fd
   ripgrep:
     repository: https://github.com/burntsushi/ripgrep
-    version: 15.2.0
     files:
       - '{release}/ripgrep-{version}-x86_64-unknown-linux-musl.tar.gz':
           ripgrep-{version}-x86_64-unknown-linux-musl/rg: rg
   bat:
     repository: https://github.com/sharkdp/bat
-    version: v0.26.1
     files:
       - '{release}/bat-v{version}-x86_64-unknown-linux-musl.tar.gz':
           bat-v{version}-x86_64-unknown-linux-musl/bat: bat
   fzf:
     repository: https://github.com/junegunn/fzf
-    version: v0.74.3
     files:
       - '{release}/fzf-{version}-linux_amd64.tar.gz':
           - fzf

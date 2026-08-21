@@ -12,7 +12,7 @@ tmpdir=$(mktemp -d)
 # mktemp uses /tmp by default (or $TMPDIR if set)
 trap 'rm -rf "$tmpdir"' EXIT
 
-wget https://github.com/Araxeus/vendorfiles-rs/releases/download/v2.0.4/vendor_v2.0.4_linux.tar.gz -O "$tmpdir/vendor.tar.gz"
+wget https://github.com/Araxeus/vendorfiles-rs/releases/download/v2.1.0/vendor_v2.1.0_linux.tar.gz -O "$tmpdir/vendor.tar.gz"
 tar -xzf "$tmpdir/vendor.tar.gz" -C "$installpath" vendor
 
 wget https://raw.githubusercontent.com/Araxeus/sync/refs/heads/main/linux-env-vendor-config.yml -O "$HOME/vendor.yml"
