@@ -6,40 +6,53 @@ set -euo pipefail
 
 installpath="$HOME/.local/bin"
 mkdir -p "$installpath"
+vendoryml="$installpath/vendor.yml"
 
+# mktemp uses /tmp by default (or $TMPDIR if set)
 tmpdir=$(mktemp -d)
 # The trap removes the temp dir when this shell exits, even if a command fails.
-# mktemp uses /tmp by default (or $TMPDIR if set)
 trap 'rm -rf "$tmpdir"' EXIT
 
+# get vendorfiles
 wget https://github.com/Araxeus/vendorfiles-rs/releases/download/v2.1.0/vendor_v2.1.0_linux.tar.gz -O "$tmpdir/vendor.tar.gz"
 tar -xzf "$tmpdir/vendor.tar.gz" -C "$installpath" vendor
+# get vendor config
+wget https://raw.githubusercontent.com/Araxeus/sync/refs/heads/main/linux-env-vendor-config.yml -O "$vendoryml"
+# replace the placeholder in the vendor config with the actual install path
+sed -i "0,/REPLACE_WITH_VENDOR_FOLDER/s|REPLACE_WITH_VENDOR_FOLDER|$installpath|" "$vendoryml"
+# run vendor to get the rest of the tools
+"$installpath/vendor" --config "$vendoryml" sync
 
-wget https://raw.githubusercontent.com/Araxeus/sync/refs/heads/main/linux-env-vendor-config.yml -O "$HOME/vendor.yml"
-
-sed -i "0,/REPLACE_WITH_VENDOR_FOLDER/s|REPLACE_WITH_VENDOR_FOLDER|$installpath|" "$HOME/vendor.yml"
-
-"$installpath/vendor" --config "$HOME/vendor.yml" sync
-
+# make micro copy to terminal clipboard (works over ssh
+# might be bugged in RDM or other unconventional terminals)
 mkdir -p "$HOME/.config/micro"
 echo '{ "clipboard": "terminal" }' > "$HOME/.config/micro/settings.json"
-
+# disable paging in bat
 batconfig=$("$installpath/bat" --config-file)
 mkdir -p "$(dirname "$batconfig")"
 echo "--paging=never" > "$batconfig"
 
-cat << 'EOF' >> "$HOME/.bashrc"
-export PATH="$HOME/.local/bin:$PATH"
+# add to bashrc:
+# 1. add installpath to PATH
+# 2. add fzf bash completion & fd as default command
+# 3. add fd as the default command for fzf
+# 4. point vendor to its global config file
+# 5. enable lsi - file and directory explorer
+cat << EOF >> "$HOME/.bashrc"
+export PATH="$installpath:\$PATH"
 
-eval "$(fzf --bash)"
+eval "\$(fzf --bash)"
 export FZF_DEFAULT_COMMAND="fd --type f"
 
-lsi() { 
+alias vendor="vendor --config $vendoryml"
+
+lsi() {
    local output 
-   if output=$(ls-interactive "$@") && [[ $output ]] ; then 
-     cd "$output" 
-   fi 
+   if output=\$(ls-interactive "\$@") && [[ \$output ]] ; then
+     cd "\$output"
+   fi
 }
 EOF
 
 apt autoremove -y
+echo "Setup complete. Please restart your terminal or run 'source ~/.bashrc' to apply changes."
