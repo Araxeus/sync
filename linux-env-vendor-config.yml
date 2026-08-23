@@ -9,7 +9,7 @@ vendorDependencies:
     files:
       - '{release}/vendor_v{version}_linux.tar.gz':
           - vendor
-  ls-interactive:
+  ls-interactive(lsi):
     repository: https://github.com/Araxeus/ls-interactive
     files:
       - '{release}/lsi_v{version}_linux.tar.gz':
@@ -24,7 +24,7 @@ vendorDependencies:
     files:
       - '{release}/fd-v{version}-x86_64-unknown-linux-musl.tar.gz':
           fd-v{version}-x86_64-unknown-linux-musl/fd: fd
-  ripgrep:
+  ripgrep(rg):
     repository: https://github.com/burntsushi/ripgrep
     files:
       - '{release}/ripgrep-{version}-x86_64-unknown-linux-musl.tar.gz':
