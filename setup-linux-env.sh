@@ -50,7 +50,7 @@ lsi() {
   local output 
   if output=$(ls-interactive "$@" -x) && [[ $output ]]; then 
       if [ -f "$output" ]; then 
-          micro "$output" 
+          ttt "$output" 
       else 
           cd "$output" 
       fi 

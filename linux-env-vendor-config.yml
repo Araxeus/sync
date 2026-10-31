@@ -19,6 +19,10 @@ vendorDependencies:
     files:
       - '{release}/micro-{version}-linux64.tar.gz':
           micro-{version}/micro: micro
+  ttt:
+    repository: https://github.com/eugenioenko/ttt
+    files:
+      - '{release}/ttt-linux-amd64': ttt
   fd:
     repository: https://github.com/sharkdp/fd
     files:
