@@ -14,7 +14,7 @@ tmpdir=$(mktemp -d)
 trap 'rm -rf "$tmpdir"' EXIT
 
 # get vendorfiles
-wget https://github.com/Araxeus/vendorfiles-rs/releases/download/v2.3.0/vendor_v2.3.0_linux.tar.gz -O "$tmpdir/vendor.tar.gz"
+wget https://github.com/Araxeus/vendorfiles-rs/releases/download/v2.4.0/vendor_v2.4.0_linux.tar.gz -O "$tmpdir/vendor.tar.gz"
 tar -xzf "$tmpdir/vendor.tar.gz" -C "$installpath" vendor
 # get vendor config
 wget https://raw.githubusercontent.com/Araxeus/sync/refs/heads/main/linux-env-vendor-config.yml -O "$vendoryml"
@@ -46,11 +46,15 @@ export FZF_DEFAULT_COMMAND="fd --type f"
 
 export DEFAULT_VENDOR_CONFIG="$vendoryml"
 
-lsi() {
-   local output 
-   if output=\$(ls-interactive "\$@") && [[ \$output ]] ; then
-     cd "\$output"
-   fi
+lsi() { 
+  local output 
+  if output=$(ls-interactive "$@" -x) && [[ $output ]]; then 
+      if [ -f "$output" ]; then 
+          micro "$output" 
+      else 
+          cd "$output" 
+      fi 
+  fi 
 }
 EOF
 
