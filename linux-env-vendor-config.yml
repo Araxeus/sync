@@ -4,12 +4,12 @@ default:
   vendorFolder: '{vendorFolder}'
   locked: false
 vendorDependencies:
-  vendorfiles-rs:
+  vendorfiles:
     repository: https://github.com/Araxeus/vendorfiles-rs
     files:
       - '{release}/vendor_v{version}_linux.tar.gz':
           - vendor
-  ls-interactive(lsi):
+  ls-interactive:
     repository: https://github.com/Araxeus/ls-interactive
     files:
       - '{release}/lsi_v{version}-unknown-linux-musl.tar.gz':
