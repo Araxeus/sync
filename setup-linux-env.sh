@@ -39,12 +39,16 @@ echo "--paging=never" > "$batconfig"
 # 4. point vendor to its global config file
 # 5. enable lsi - file and directory explorer
 cat << EOF >> "$HOME/.bashrc"
+
 export PATH="$installpath:\$PATH"
 
 eval "\$(fzf --bash)"
 export FZF_DEFAULT_COMMAND="fd --type f"
 
 export DEFAULT_VENDOR_CONFIG="$vendoryml"
+
+EOF
+cat << 'EOF' >> "$HOME/.bashrc"
 
 lsi() { 
     local output 
@@ -79,5 +83,7 @@ logs() {
 }
 EOF
 
-apt autoremove -y
+if command -v apt >/dev/null 2>&1; then
+    sudo apt autoremove -y
+fi
 echo "Setup complete. Please restart your terminal or run 'source ~/.bashrc' to apply changes."
