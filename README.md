@@ -15,3 +15,6 @@ only the user account that runs this script will be affected. It will not affect
 * [fzf](https://github.com/junegunn/fzf)
 * [fd](https://github.com/sharkdp/fd)
 * [bat](https://github.com/sharkdp/bat)
+* [ttt](https://github.com/eugenioenko/ttt)
+* [tmux](https://github.com/tmux/tmux-builds)
+* [gum](https://github.com/charmbracelet/gum)
