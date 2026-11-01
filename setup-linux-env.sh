@@ -21,7 +21,7 @@ wget https://raw.githubusercontent.com/Araxeus/sync/refs/heads/main/linux-env-ve
 # replace the placeholder in the vendor config with the actual install path
 sed -i "0,/REPLACE_WITH_VENDOR_FOLDER/s|REPLACE_WITH_VENDOR_FOLDER|$installpath|" "$vendoryml"
 # run vendor to get the rest of the tools
-"$installpath/vendor" --config "$vendoryml" sync
+"$installpath/vendor" --config "$vendoryml" add vendorfiles ls-interactive micro ttt fd ripgrep bat fzf tmux gum
 
 # make micro copy to terminal clipboard (works over ssh
 # might be bugged in RDM or other unconventional terminals)
@@ -47,14 +47,35 @@ export FZF_DEFAULT_COMMAND="fd --type f"
 export DEFAULT_VENDOR_CONFIG="$vendoryml"
 
 lsi() { 
-  local output 
-  if output=$(ls-interactive "$@" -x) && [[ $output ]]; then 
-      if [ -f "$output" ]; then 
-          ttt "$output" 
-      else 
-          cd "$output" 
-      fi 
-  fi 
+    local output 
+    if output=$(ls-interactive "$@" -x) && [[ $output ]]; then 
+        if [ -f "$output" ]; then 
+            ttt "$output" 
+        else 
+            cd "$output" 
+        fi 
+    fi 
+}
+
+TA9_COMPOSE="/home/ta9/compose_files/ta9_development_platform/compose.yml"
+
+logs() {
+    local containers
+    if [ $# -gt 0 ]; then
+        containers="$*"
+    else
+        containers="$(printf "%s\n" \
+            "extensionsapi" \
+            "databaseapi" \
+            "extensionsgateway" \
+            "devportal" \
+            "servicesapi" \
+            "scmapi" \
+            "etlapi" \
+            | gum filter --no-limit)"
+    fi
+    
+    tmux new "docker compose -f $TA9_COMPOSE logs -f --tail 100 $containers"
 }
 EOF
 
