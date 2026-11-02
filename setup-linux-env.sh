@@ -30,7 +30,17 @@ echo '{ "clipboard": "terminal" }' > "$HOME/.config/micro/settings.json"
 # disable paging in bat
 batconfig=$("$installpath/bat" --config-file)
 mkdir -p "$(dirname "$batconfig")"
-echo "--paging=never" > "$batconfig"
+
+# appends $1 to $2 (default $WRITE_PATH) unless it is already there (multi-line safe)
+write() {
+    local text="$1" path="${2:-$WRITE_PATH}"
+    touch "$path"
+    if [[ "$(<"$path")" != *"$text"* ]]; then
+        printf '%s\n' "$text" >> "$path"
+    fi
+}
+
+write "--paging=never" "$batconfig"
 
 # add to bashrc:
 # 1. add installpath to PATH
@@ -38,18 +48,13 @@ echo "--paging=never" > "$batconfig"
 # 3. add fd as the default command for fzf
 # 4. point vendor to its global config file
 # 5. enable lsi - file and directory explorer
-cat << EOF >> "$HOME/.bashrc"
+WRITE_PATH="$HOME/.bashrc"
+write "export PATH=\"$installpath:\$PATH\""
+write 'eval "$(fzf --bash)"'
+write 'export FZF_DEFAULT_COMMAND="fd --type f"'
+write "export DEFAULT_VENDOR_CONFIG=\"$vendoryml\""
 
-export PATH="$installpath:\$PATH"
-
-eval "\$(fzf --bash)"
-export FZF_DEFAULT_COMMAND="fd --type f"
-
-export DEFAULT_VENDOR_CONFIG="$vendoryml"
-
-EOF
-cat << 'EOF' >> "$HOME/.bashrc"
-
+shell_funcs=$(cat << 'EOF'
 lsi() { 
     local output 
     if output=$(ls-interactive "$@" -x) && [[ $output ]]; then 
@@ -82,6 +87,8 @@ logs() {
     tmux new "docker compose -f $TA9_COMPOSE logs -f --tail 100 $containers"
 }
 EOF
+)
+write "$shell_funcs"
 
 if command -v apt >/dev/null 2>&1; then
     sudo apt autoremove -y
