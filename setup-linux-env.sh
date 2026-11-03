@@ -48,6 +48,7 @@ write "--paging=never" "$batconfig"
 # 3. add fd as the default command for fzf
 # 4. point vendor to its global config file
 # 5. enable lsi - file and directory explorer
+# 6. add TA9_COMPOSE and logs() if a ta9 user exists
 WRITE_PATH="$HOME/.bashrc"
 write "export PATH=\"$installpath:\$PATH\""
 write 'eval "$(fzf --bash)"'
@@ -65,7 +66,12 @@ lsi() {
         fi 
     fi 
 }
+EOF
+)
+write "$shell_funcs"
 
+if id ta9 >/dev/null 2>&1 || id TA9 >/dev/null 2>&1; then
+    ta9_funcs=$(cat << 'EOF'
 TA9_COMPOSE="/home/ta9/compose_files/ta9_development_platform/compose.yml"
 
 logs() {
@@ -88,7 +94,8 @@ logs() {
 }
 EOF
 )
-write "$shell_funcs"
+    write "$ta9_funcs"
+fi
 
 if command -v apt >/dev/null 2>&1; then
     sudo apt autoremove -y
