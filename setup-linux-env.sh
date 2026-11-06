@@ -56,15 +56,16 @@ write 'export FZF_DEFAULT_COMMAND="fd --type f"'
 write "export DEFAULT_VENDOR_CONFIG=\"$vendoryml\""
 
 shell_funcs=$(cat << 'EOF'
-lsi() { 
-    local output 
-    if output=$(ls-interactive "$@" -x) && [[ $output ]]; then 
-        if [ -f "$output" ]; then 
-            ttt "$output" 
-        else 
-            cd "$output" 
-        fi 
-    fi 
+lsi() {
+	local output
+	if output=$(ls-interactive "$@" -x) && [[ $output ]]; then
+		if [ -f "$output" ]; then
+			ttt "$output"
+			lsi "$(dirname "$output")"
+		else
+			cd "$output"
+		fi
+	fi
 }
 EOF
 )
