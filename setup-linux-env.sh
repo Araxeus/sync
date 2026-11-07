@@ -51,9 +51,10 @@ write "--paging=never" "$batconfig"
 # 6. add TA9_COMPOSE and logs() if a ta9 user exists
 WRITE_PATH="$HOME/.bashrc"
 write "export PATH=\"$installpath:\$PATH\""
-write 'eval "$(fzf --bash)"'
+write 'export EDITOR=ttt'
 write 'export FZF_DEFAULT_COMMAND="fd --type f"'
 write "export DEFAULT_VENDOR_CONFIG=\"$vendoryml\""
+write 'eval "$(fzf --bash)"'
 
 shell_funcs=$(cat << 'EOF'
 lsi() {
